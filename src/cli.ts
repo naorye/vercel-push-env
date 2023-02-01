@@ -19,7 +19,7 @@ cli
   .option('-t, --token <token>', 'Login token to use for pushing environment variables')
   .option('-b, --branch <branch>', 'Specific git branch for pushed preview environment variables')
   .action(async (file: string, env: string, otherEnvs: string[], options: CliOptions) => {
-    await pushEnvVars(file, [env, ...otherEnvs], { ...options, interactive: true })
+    await pushEnvVars(file, [env, ...otherEnvs], { ...options, interactive: false })
   })
 
 async function run() {
