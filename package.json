@@ -1,5 +1,5 @@
 {
-  "name": "vercel-env-push",
+  "name": "vercel-push-env",
   "description": "The missing Vercel CLI command to push environment variables from .env files.",
   "homepage": "https://github.com/HiDeoo/vercel-env-push",
   "version": "0.3.0",
