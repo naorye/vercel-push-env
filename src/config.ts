@@ -3,6 +3,8 @@ import fs from 'node:fs'
 
 import { Option, program } from 'commander'
 
+import type { Config, EnvTarget } from './types'
+
 program
   .addOption(new Option('--projectId <projectId>', 'the name of your Vercel project').makeOptionMandatory(true))
   .addOption(new Option('--teamId <teamId>', 'the unique id of your Vercel team'))
@@ -26,25 +28,13 @@ program
 
 program.parse()
 
-type VercelEnvTarget = 'development' | 'preview' | 'production'
-
-interface Config {
-  apiRoot: string
-  projectId: string
-  teamId?: string
-  token: string
-  targets: VercelEnvTarget[]
-  varType: 'system' | 'encrypted' | 'plain' | 'secret'
-  envFile: string
-}
-
-const vercelEnvTargets: Set<VercelEnvTarget> = new Set(['development', 'preview', 'production'])
+const supportedEnvTargets: Set<EnvTarget> = new Set(['development', 'preview', 'production'])
 
 function getConfig() {
   const config = program.opts<Config>()
 
   for (const target of config.targets) {
-    assert(vercelEnvTargets.has(target as VercelEnvTarget), `Unknown environment '${target}' specified.`)
+    assert(supportedEnvTargets.has(target as EnvTarget), `Unknown environment '${target}' specified.`)
   }
 
   assert(fs.existsSync(config.envFile), `No file found at '${config.envFile}'.`)
@@ -53,4 +43,3 @@ function getConfig() {
 }
 
 export { getConfig }
-export type { Config, VercelEnvTarget }
