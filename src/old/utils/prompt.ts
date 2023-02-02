@@ -4,13 +4,11 @@ import Table from 'cli-table3'
 import * as kolorist from 'kolorist'
 import { createSpinner } from 'nanospinner'
 
-export { type Spinner } from 'nanospinner'
-
-export function text(builder: (colors: typeof kolorist) => string) {
+function text(builder: (colors: typeof kolorist) => string) {
   console.log(builder(kolorist))
 }
 
-export function table(builder: (colors: typeof kolorist) => [headers: string[], values: string[][]]) {
+function table(builder: (colors: typeof kolorist) => [headers: string[], values: string[][]]) {
   const [headers, values] = builder(kolorist)
 
   const table = new Table({
@@ -23,7 +21,7 @@ export function table(builder: (colors: typeof kolorist) => [headers: string[], 
   console.log(table.toString())
 }
 
-export function redact(value: string) {
+function redact(value: string) {
   if (value.length < 5) {
     return '*'.repeat(value.length)
   }
@@ -31,11 +29,11 @@ export function redact(value: string) {
   return value[0] + '*'.repeat(value.length - 2) + value[value.length - 1]
 }
 
-export function spin(message: string) {
+function spin(message: string) {
   return createSpinner(message, { color: 'cyan' }).start()
 }
 
-export function confirm(question: string, defaultYes = true) {
+function confirm(question: string, defaultYes = true) {
   const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout,
@@ -61,3 +59,5 @@ export function confirm(question: string, defaultYes = true) {
 function getConfirmAnswers(defaultYes = true): [string, string] {
   return [defaultYes ? 'Y' : 'y', !defaultYes ? 'N' : 'n']
 }
+
+export { text, table, redact, spin, confirm }

@@ -1,20 +1,21 @@
 import assert from 'node:assert'
 
-import wyt from 'wyt'
-
 import { type EnvVars } from './file'
 import { exec, isExecError } from './process'
 import { throwIfAnyRejected } from './promise'
+import { rateLimit } from './rateLimit'
 
-const vercelEnvs = ['development', 'preview', 'production'] as const
+type Env = 'development' | 'preview' | 'production'
 
-const rateLimiter = wyt(8, 10_000)
+const vercelEnvs: readonly Env[] = ['development', 'preview', 'production'] as const
 
-export function validateVercelEnvs(envs: string[], branch?: string): asserts envs is VercelEnv[] {
+const rateLimiter = rateLimit(8, 10_000)
+
+function validateVercelEnvs(envs: string[], branch?: string): asserts envs is VercelEnv[] {
   assert(envs.length > 0, 'No environments specified.')
 
   for (const env of envs) {
-    assert((vercelEnvs as ReadonlyArray<string>).includes(env), `Unknown environment '${env}' specified.`)
+    assert(vercelEnvs.includes(env as Env), `Unknown environment '${env}' specified.`)
   }
 
   if (branch && branch.length > 0) {
@@ -25,7 +26,7 @@ export function validateVercelEnvs(envs: string[], branch?: string): asserts env
   }
 }
 
-export async function replaceEnvVars(envs: VercelEnv[], envVars: EnvVars, options: VercelOptions) {
+async function replaceEnvVars(envs: VercelEnv[], envVars: EnvVars, options: VercelOptions) {
   await removeEnvVars(envs, envVars, options)
   await addEnvVars(envs, envVars, options)
 }
@@ -106,3 +107,5 @@ interface VercelOptions {
   branch?: string
   token?: string
 }
+
+export { validateVercelEnvs, replaceEnvVars }

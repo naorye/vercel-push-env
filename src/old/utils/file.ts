@@ -4,11 +4,11 @@ import fs from 'node:fs'
 import dotenv from 'dotenv'
 import dotenvExpand from 'dotenv-expand'
 
-export function validateFile(filePath: string) {
+function validateFile(filePath: string) {
   assert(fs.existsSync(filePath), `No file found at '${filePath}'.`)
 }
 
-export function parseEnvFile(envFilePath: string): EnvVars {
+function parseEnvFile(envFilePath: string): EnvVars {
   const content = fs.readFileSync(envFilePath, 'utf8')
 
   const envVars = dotenv.parse(content)
@@ -32,4 +32,7 @@ export function parseEnvFile(envFilePath: string): EnvVars {
   }
 }
 
-export type EnvVars = Record<string, string>
+type EnvVars = Record<string, string>
+
+export { validateFile, parseEnvFile }
+export type { EnvVars }

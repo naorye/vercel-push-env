@@ -1,4 +1,4 @@
-export function throwIfAnyRejected(results: PromiseSettledResult<unknown>[]): void {
+function throwIfAnyRejected(results: PromiseSettledResult<unknown>[]): void {
   for (const result of results) {
     if (isRejected(result)) {
       throw result.reason
@@ -9,3 +9,5 @@ export function throwIfAnyRejected(results: PromiseSettledResult<unknown>[]): vo
 function isRejected(input: PromiseSettledResult<unknown>): input is PromiseRejectedResult {
   return input.status === 'rejected'
 }
+
+export { throwIfAnyRejected }
