@@ -2,7 +2,7 @@
   "name": "vercel-push-env",
   "description": "The missing Vercel CLI command to push environment variables from .env files.",
   "homepage": "https://github.com/naorye/vercel-push-env",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "author": "NaorYe",
   "license": "MIT",
   "type": "module",
